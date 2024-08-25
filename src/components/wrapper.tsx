@@ -3,5 +3,9 @@ type WrapperProps = {
 };
 
 export function Wrapper({ children }: WrapperProps) {
-  return <div className="flex h-screen flex-col px-4 py-8">{children}</div>;
+  return (
+    <div className="flex h-screen flex-col items-center py-8">
+      <section className="w-full max-w-7xl px-4">{children}</section>
+    </div>
+  );
 }
