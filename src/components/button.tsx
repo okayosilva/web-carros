@@ -1,4 +1,5 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
+import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -6,6 +7,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   color?: 'red' | 'green' | 'black';
   size?: 'sm' | 'lg';
   fullWidth?: boolean;
+  className?: string;
 };
 
 const button = tv({
@@ -36,10 +38,14 @@ export function Button({
   size,
   fullWidth,
   children,
+  className,
   ...props
 }: ButtonProps) {
   return (
-    <button className={button({ color, size, fullWidth })} {...props}>
+    <button
+      className={twMerge(button({ color, size, fullWidth }), className)}
+      {...props}
+    >
       Button
     </button>
   );
