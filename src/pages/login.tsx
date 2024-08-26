@@ -45,7 +45,7 @@ export function Login() {
         <img
           src={logo}
           alt="login"
-          className="h-24 w-72 object-cover md:w-96"
+          className="h-24 w-72 object-contain md:w-96"
         />
       </Link>
 
@@ -76,8 +76,11 @@ export function Login() {
         </Button>
       </form>
 
-      <Link to="/register" className="mt-4 font-poppins text-zinc-900">
-        Ainda não possui uma conta? Cadastre-se
+      <Link
+        to="/register"
+        className="mt-4 text-center font-poppins text-zinc-900"
+      >
+        Ainda não possui uma conta? <br /> Cadastre-se
       </Link>
     </section>
   );

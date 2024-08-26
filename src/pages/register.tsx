@@ -80,8 +80,8 @@ export function Register() {
         </Button>
       </form>
 
-      <Link to="/login" className="mt-4 font-poppins text-zinc-900">
-        Já possui uma conta? Faça login
+      <Link to="/login" className="mt-4 text-center font-poppins text-zinc-900">
+        Já possui uma conta? <br /> Faça login
       </Link>
     </section>
   );

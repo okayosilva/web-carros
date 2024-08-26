@@ -11,7 +11,7 @@ export function Home() {
         <input
           placeholder="Encontre seu carro aqui"
           type="text"
-          className="h-12 w-full rounded-lg border border-gray-400 px-4 outline-none"
+          className="h-12 w-full rounded-lg border border-gray-400 px-4 outline-none placeholder:text-sm md:placeholder:text-base"
           name="search"
         />
         <Button type="submit">Buscar</Button>

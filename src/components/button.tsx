@@ -19,7 +19,7 @@ const button = tv({
       black: 'bg-zinc-900 hover:bg-zinc-950',
     },
     size: {
-      sm: 'h-12 w-64',
+      sm: 'h-12 w-20 md:w-64',
       lg: 'h-16 w-auto',
     },
     fullWidth: {
@@ -31,6 +31,18 @@ const button = tv({
     color: 'red',
     fullWidth: false,
   },
+  compoundVariants: [
+    {
+      size: 'sm',
+      fullWidth: true,
+      class: 'w-full md:w-full',
+    },
+    {
+      size: 'lg',
+      fullWidth: true,
+      class: 'w-full',
+    },
+  ],
 });
 
 export function Button({
