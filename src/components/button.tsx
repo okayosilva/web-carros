@@ -46,7 +46,7 @@ export function Button({
       className={twMerge(button({ color, size, fullWidth }), className)}
       {...props}
     >
-      Button
+      {children}
     </button>
   );
 }
