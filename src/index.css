@@ -21,6 +21,7 @@ html {
 body {
   min-height: 100vh;
   background-color: var(--gray);
+  font-family: 'Inter', sans-serif;
 }
 
 button {
