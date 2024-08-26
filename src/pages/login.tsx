@@ -3,22 +3,76 @@ import logo from '../assets/logo.svg';
 import { Button } from '../components/button';
 import { Input } from '../components/input';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+const schema = z.object({
+  email: z
+    .string()
+    .email({ message: 'Por favor, insira um e-mail válido.' })
+    .min(1, { message: 'O e-mail é obrigatório.' }),
+  password: z
+    .string()
+    .min(6, { message: 'A senha deve ter pelo menos 6 caracteres.' })
+    .regex(/[A-Z]/, {
+      message: 'A senha deve conter pelo menos uma letra maiúscula.',
+    })
+    .regex(/[!@#$%^&*(),.?":{}|<>]/, {
+      message: 'A senha deve conter pelo menos um caractere especial.',
+    })
+    .regex(/\d/, { message: 'A senha deve conter pelo menos um número.' }),
+});
+
+type FormData = z.infer<typeof schema>;
+
 export function Login() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    mode: 'onChange',
+  });
+
+  function onSubmit(data: FormData) {
+    console.log(data);
+  }
   return (
-    <section className="flex h-screen flex-col items-center justify-center">
+    <section className="flex min-h-screen flex-col items-center justify-center px-4">
       <Link to="/">
-        <img src={logo} alt="login" className="h-24 w-96 object-cover" />
+        <img
+          src={logo}
+          alt="login"
+          className="h-24 w-72 object-cover md:w-96"
+        />
       </Link>
 
       <form
         action=""
         className="mt-11 flex w-full max-w-[680px] flex-col gap-4 rounded-lg bg-white px-4 py-8"
+        onSubmit={handleSubmit(onSubmit)}
       >
-        <Input type="email" placeholder="email@gmail.com" className="h-10" />
-        <Input type="password" placeholder="**********" className="h-10" />
+        <Input
+          type="email"
+          name="email"
+          placeholder="webcar@mail.com"
+          className="h-10"
+          error={errors?.email?.message}
+          register={register}
+        />
+        <Input
+          type="password"
+          name="password"
+          placeholder="**********"
+          className="h-10"
+          error={errors?.password?.message}
+          register={register}
+        />
 
         <Button type="submit" color="black" fullWidth>
-          Entrar
+          Acessar
         </Button>
       </form>
 

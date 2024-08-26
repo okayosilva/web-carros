@@ -1,6 +1,5 @@
 import { Button } from '../components/button';
 import { CardItem } from '../components/cardItem';
-import { Input } from '../components/input';
 
 export function Home() {
   return (
@@ -9,7 +8,12 @@ export function Home() {
         action=""
         className="flex h-24 items-center gap-4 rounded-lg bg-white px-4 py-5"
       >
-        <Input placeholder="Encontre seu carro aqui" type="text" />
+        <input
+          placeholder="Encontre seu carro aqui"
+          type="text"
+          className="h-12 w-full rounded-lg border border-gray-400 px-4 outline-none"
+          name="search"
+        />
         <Button type="submit">Buscar</Button>
       </form>
 
