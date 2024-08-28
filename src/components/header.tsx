@@ -1,11 +1,11 @@
-import { LogOut, User } from 'lucide-react';
-import { useState } from 'react';
+import { LoaderCircle, LogOut, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.svg';
+import { useAuthenticate } from '../context/useAuthenticate';
 
 export function Header() {
-  const [userIsLogged, setUserIsLogged] = useState(false);
-  const [loginsAuth, setLoginsAuth] = useState(false);
+  const { isAuthenticated, loadingAuth } = useAuthenticate();
+
   return (
     <header className="flex h-16 w-full items-center justify-center bg-white drop-shadow">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4">
@@ -13,7 +13,18 @@ export function Header() {
           <img src={logo} alt="web carros" />
         </Link>
 
-        {userIsLogged && !loginsAuth && (
+        {loadingAuth && (
+          <div className="text-gray-700">
+            <div className="group rounded-full border-2 border-zinc-500 bg-zinc-700 p-2 transition-all duration-300">
+              <LoaderCircle
+                className="animate-spin text-zinc-50 transition-all duration-300"
+                size={18}
+              />
+            </div>
+          </div>
+        )}
+
+        {!isAuthenticated && !loadingAuth && (
           <Link to="/login" className="text-gray-700">
             <div className="group rounded-full border-2 border-zinc-300 p-2 transition-all duration-300 hover:bg-zinc-400">
               <User
@@ -24,7 +35,7 @@ export function Header() {
           </Link>
         )}
 
-        {!userIsLogged && !loginsAuth && (
+        {isAuthenticated && !loadingAuth && (
           <Link to="/login" className="text-gray-700">
             <div className="group rounded-full border-2 border-zinc-300 p-2 transition-all duration-300 hover:bg-zinc-400">
               <LogOut
