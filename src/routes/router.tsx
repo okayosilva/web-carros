@@ -8,6 +8,8 @@ import { NewCart } from '../pages/dashboard/newCart';
 import { Home } from '../pages/home';
 import { Login } from '../pages/login';
 import { Register } from '../pages/register';
+import { PrivateRoutes } from './privateRoutes';
+import { NotFound } from '../pages/notfound';
 
 export function Router() {
   return (
@@ -15,12 +17,27 @@ export function Router() {
       <Routes>
         <Route element={<LayoutDefault />}>
           <Route path="/" element={<Home />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/" element={<CarDetail />} />
-          <Route path="/" element={<NewCart />} />
+          <Route path="/car/:id" element={<CarDetail />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoutes>
+                <Dashboard />
+              </PrivateRoutes>
+            }
+          />
+          <Route
+            path="/dashboard/new"
+            element={
+              <PrivateRoutes>
+                <NewCart />
+              </PrivateRoutes>
+            }
+          />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
