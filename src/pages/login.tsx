@@ -1,11 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import { Button } from '../components/button';
 import { Input } from '../components/input';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { auth } from '../services/firebaseConection';
+import { notifyWithToastify } from '../utils/notifyWithToastify';
 
 const schema = z.object({
   email: z
@@ -36,9 +40,25 @@ export function Login() {
     mode: 'onChange',
   });
 
-  function onSubmit(data: FormData) {
-    console.log(data);
+  const navigate = useNavigate();
+
+  function onSubmit({ email, password }: FormData) {
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        navigate('/dashboard', { replace: true });
+      })
+      .catch(() => {
+        notifyWithToastify('error', 'E-mail ou senha inválidos.');
+      });
   }
+
+  useEffect(() => {
+    async function handleLogout() {
+      await signOut(auth);
+    }
+
+    handleLogout();
+  }, []);
   return (
     <section className="flex min-h-screen flex-col items-center justify-center px-4">
       <Link to="/">

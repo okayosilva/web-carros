@@ -15,7 +15,7 @@ export function Router() {
       <Routes>
         <Route element={<LayoutDefault />}>
           <Route path="/" element={<Home />} />
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/" element={<CarDetail />} />
           <Route path="/" element={<NewCart />} />
         </Route>
