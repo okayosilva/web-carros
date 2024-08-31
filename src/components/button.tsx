@@ -11,7 +11,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const button = tv({
-  base: 'flex justify-center items-center font-bold rounded-lg py-2 text-white transition-all duration-300 px-4',
+  base: 'flex justify-center items-center font-bold rounded-lg py-2 text-white transition-all duration-300 px-4 border-none',
   variants: {
     color: {
       red: 'bg-red-500 hover:bg-red-600',
