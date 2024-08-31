@@ -15,6 +15,7 @@ import { auth } from '../services/firebaseConection';
 
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthenticate } from '../context/useAuthenticate';
 import { notifyWithToastify } from '../utils/notifyWithToastify';
 
 const schema = z.object({
@@ -38,6 +39,8 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export function Register() {
+  const { handleInfoUser } = useAuthenticate();
+
   const {
     register,
     handleSubmit,
@@ -56,6 +59,13 @@ export function Register() {
           displayName: name,
         });
         notifyWithToastify('success', 'Cadastro realizado com sucesso.', 2000);
+
+        handleInfoUser({
+          uid: userCredential.user.uid,
+          email: email || '',
+          name: name || '',
+        });
+
         setTimeout(() => {
           navigate('/dashboard', { replace: true });
         }, 2500);

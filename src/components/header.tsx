@@ -1,4 +1,4 @@
-import { LoaderCircle, LogOut, User } from 'lucide-react';
+import { LoaderCircle, LogIn, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import { useAuthenticate } from '../context/useAuthenticate';
@@ -27,7 +27,7 @@ export function Header() {
         {!isAuthenticated && !loadingAuth && (
           <Link to="/login" className="text-gray-700">
             <div className="group rounded-full border-2 border-zinc-300 p-2 transition-all duration-300 hover:bg-zinc-400">
-              <User
+              <LogIn
                 className="text-zinc-500 transition-all duration-300 group-hover:text-zinc-50"
                 size={18}
               />
@@ -36,9 +36,9 @@ export function Header() {
         )}
 
         {isAuthenticated && !loadingAuth && (
-          <Link to="/login" className="text-gray-700">
+          <Link to="/dashboard" className="text-gray-700">
             <div className="group rounded-full border-2 border-zinc-300 p-2 transition-all duration-300 hover:bg-zinc-400">
-              <LogOut
+              <User
                 className="text-zinc-500 transition-all duration-300 group-hover:text-zinc-50"
                 size={18}
               />

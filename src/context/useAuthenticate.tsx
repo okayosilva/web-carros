@@ -5,6 +5,8 @@ import { auth } from '../services/firebaseConection';
 type AuthenticateContextType = {
   isAuthenticated: boolean;
   loadingAuth: boolean;
+  handleInfoUser: (data: UserData) => void;
+  user: UserData | null;
 };
 
 type AuthenticateProviderProps = {
@@ -22,6 +24,14 @@ const AuthenticateContext = createContext({} as AuthenticateContextType);
 export function AuthenticateProvider({ children }: AuthenticateProviderProps) {
   const [user, setUser] = useState<UserData | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
+
+  function handleInfoUser({ name, email, uid }: UserData) {
+    setUser({
+      name,
+      email,
+      uid,
+    });
+  }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -44,7 +54,7 @@ export function AuthenticateProvider({ children }: AuthenticateProviderProps) {
 
   return (
     <AuthenticateContext.Provider
-      value={{ isAuthenticated: !!user, loadingAuth }}
+      value={{ isAuthenticated: !!user, loadingAuth, handleInfoUser, user }}
     >
       {children}
     </AuthenticateContext.Provider>
