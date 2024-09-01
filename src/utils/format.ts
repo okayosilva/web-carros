@@ -1,18 +1,7 @@
 export const formatCurrency = (value: string) => {
-  const numericValue = value.replace(/[^\d]/g, '');
-
-  const formattedValue = numericValue
-    .replace(/(\d)(\d{2})$/, '$1,$2')
-    .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-    .replace(/^/, 'R$ ');
-
-  return formattedValue;
-};
-
-export const formatKmValue = (value: string) => {
-  const numericValue = value.replace(/[^\d]/g, '');
-
-  const formattedValue = numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
-  return formattedValue;
+  const numericValue = parseFloat(value.replace(/[^\d]/g, '')) / 100;
+  return numericValue.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  });
 };

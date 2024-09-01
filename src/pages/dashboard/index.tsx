@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
+import { formatCurrency } from '../../utils/format';
 
 const currentYear = new Date().getFullYear();
 const yearValidation = (value: string) => {
@@ -25,10 +26,15 @@ const schema = z.object({
     .string()
     .min(4, { message: 'O ano é obrigatório' })
     .max(4, { message: 'O ano é inválido' })
-    .refine((value) => yearValidation, {
-      message: 'O ano deve ser um número válido entre 1900 e o ano atual',
+    .refine(yearValidation, {
+      message: `O ano deve ser um número válido entre 1900 e ${currentYear}`,
     }),
-  km: z.string().min(1, { message: 'O KM é obrigatório' }),
+  km: z
+    .string()
+    .min(1, { message: 'O KM é obrigatório' })
+    .refine((value) => {
+      return !isNaN(parseFloat(value.replace(/[^\d]/g, '')));
+    }),
   price: z
     .string()
     .min(1, { message: 'O preço é obrigatório' })
@@ -57,6 +63,7 @@ export function Dashboard() {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: 'onChange',
@@ -148,6 +155,10 @@ export function Dashboard() {
                 name="price"
                 error={errors.price?.message}
                 placeholder="R$ 10.000,00"
+                onChange={(e) => {
+                  const formattedValue = formatCurrency(e.target.value);
+                  setValue('price', formattedValue);
+                }}
               />
             </div>
             <div className="w-full space-y-2 md:w-auto">
