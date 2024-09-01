@@ -25,6 +25,15 @@ export function Input({
 }: InputProps) {
   const registerWithMask = useHookFormMask(register);
   const maskSelected = mask || '';
+
+  const registerOptions = mask
+    ? {
+        ...registerWithMask(name, maskSelected, {
+          required: true,
+        }),
+      }
+    : { ...register(name, rules) };
+
   return (
     <div className="">
       <input
@@ -34,9 +43,7 @@ export function Input({
           'h-12 w-full rounded-lg border border-gray-400 px-4 outline-none focus:border-red-500/50',
           className,
         )}
-        {...registerWithMask(name, maskSelected, {
-          required: true,
-        })}
+        {...registerOptions}
         {...props}
       />
       {error && <p className="mt-1 text-xs text-red-500">{error || 'Error'}</p>}
