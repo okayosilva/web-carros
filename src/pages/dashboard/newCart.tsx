@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LoaderCircle, Trash2, Upload } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
+import { addDoc, collection } from 'firebase/firestore';
 import {
   deleteObject,
   getDownloadURL,
@@ -16,7 +17,7 @@ import { z } from 'zod';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { useAuthenticate } from '../../context/useAuthenticate';
-import { storage } from '../../services/firebaseConection';
+import { db, storage } from '../../services/firebaseConection';
 import { formatCurrency } from '../../utils/format';
 import { notifyWithToastify } from '../../utils/notifyWithToastify';
 
@@ -92,7 +93,40 @@ export function NewCart() {
   });
 
   function onSubmit(data: FormData) {
-    console.log(data);
+    if (imageCar.length === 0) {
+      notifyWithToastify('error', 'Envie pelo menos uma imagem');
+      return;
+    }
+
+    const carListImages = imageCar.map((car) => ({
+      uid: car.uuid,
+      name: car.name,
+      url: car.url,
+    }));
+
+    addDoc(collection(db, 'cars'), {
+      name: data.name,
+      model: data.model,
+      year: data.year,
+      km: parseFloat(data.km.replace(/[^\d]/g, '')),
+      price: parseFloat(data.price.replace(/[^\d]/g, '')),
+      color: data.color,
+      city: data.city,
+      whatsapp: data.whatsapp,
+      description: data.description,
+      created: new Date(),
+      owner: user?.name,
+      uid: user?.uid,
+      images: carListImages,
+    })
+      .then(() => {
+        reset();
+        setImageCar([]);
+        notifyWithToastify('success', 'Carro cadastrado com sucesso');
+      })
+      .catch(() => {
+        notifyWithToastify('error', 'Erro ao cadastrar carro');
+      });
   }
 
   async function handleFile(e: ChangeEvent<HTMLInputElement>) {
@@ -148,45 +182,9 @@ export function NewCart() {
     }
   }
 
-  async function fetchImages() {
-    if (!user?.uid) {
-      return;
-    }
-
-    setLoading(true);
-
-    const storage = getStorage();
-    const imagesRef = ref(storage, `images/${user.uid}`);
-
-    try {
-      const imageListAll = await listAll(imagesRef);
-      const imageItems = await Promise.all(
-        imageListAll.items.map(async (item) => {
-          const url = await getDownloadURL(item);
-          return {
-            uuid: user.uid,
-            name: item.name,
-            preview: url,
-            url,
-          };
-        }),
-      );
-
-      setImageCar(imageItems);
-    } catch (error) {
-      notifyWithToastify('error', 'Erro ao buscar imagens');
-    }
-
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    fetchImages();
-  }, [user]);
-
   return (
     <section className="mt-9 flex flex-col">
-      <div className="grid grid-cols-6 flex-wrap gap-4 rounded-lg bg-white px-4 py-3 shadow-sm">
+      <div className="grid flex-wrap gap-4 rounded-lg bg-white px-4 py-3 shadow-sm md:grid-cols-6">
         <button className="group relative flex h-40 w-full items-center justify-center rounded-lg border-2 border-zinc-700 transition-all duration-200 hover:bg-zinc-400 md:max-w-56">
           <Upload
             size={32}
@@ -221,7 +219,7 @@ export function NewCart() {
         {imageCar.map((image) => (
           <div className="group relative h-40 flex-1" key={image.name}>
             <button
-              className="absolute right-2 top-2 z-10 rounded-lg bg-red-500 p-2 transition-all group-hover:bg-red-600"
+              className="absolute right-2 top-2 z-10 cursor-pointer rounded-lg bg-red-500 p-2 transition-all group-hover:bg-red-600"
               onClick={() => handleDeleteImage(image)}
             >
               <Trash2 size={16} className="text-white transition-colors" />
