@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Trash2, Upload } from 'lucide-react';
+import { LoaderCircle, Trash2, Upload } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -201,9 +201,21 @@ export function NewCart() {
         </button>
 
         {loading && (
-          <div className="flex h-40 w-full items-center justify-center">
-            <div className="h-40 w-full animate-pulse rounded-lg bg-gray-300"></div>
-          </div>
+          <>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div
+                key={index}
+                className="flex h-40 w-full items-center justify-center"
+              >
+                <div className="flex h-40 w-full animate-pulse items-center justify-center rounded-lg bg-gray-200">
+                  <LoaderCircle
+                    className="animate-spin text-red-500"
+                    size={32}
+                  />
+                </div>
+              </div>
+            ))}
+          </>
         )}
 
         {imageCar.map((image) => (
