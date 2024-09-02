@@ -11,6 +11,8 @@ type CarProps = {
   url: string;
   nameImage: string;
   idImage: string;
+  handleImageLoaded: (id: string) => void;
+  imagesLoaded: string[];
 };
 
 export function CardItem({
@@ -24,17 +26,22 @@ export function CardItem({
   price,
   uid,
   year,
+  imagesLoaded,
+  handleImageLoaded,
 }: CarProps) {
   return (
-    <section className="flex h-[465px] w-full flex-col overflow-hidden rounded-lg bg-white drop-shadow-md">
+    <section className="flex w-full flex-col overflow-hidden rounded-lg bg-white drop-shadow-md">
       <img
         src={url}
         alt={nameImage}
         className="h-72 w-full cursor-pointer rounded-lg object-cover transition-all duration-300 hover:scale-105"
+        style={{
+          display: imagesLoaded.includes(id) ? 'block' : 'none',
+        }}
+        onLoad={() => handleImageLoaded(id)}
       />
-
       <article className="flex flex-1 flex-col justify-between gap-8 px-3 py-4">
-        <div className="">
+        <div>
           <h2 className="font-bold text-zinc-900">{name}</h2>
           <p className="text-zinc-800">
             {year} | {km}km
