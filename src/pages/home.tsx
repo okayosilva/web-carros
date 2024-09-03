@@ -5,7 +5,7 @@ import { Button } from '../components/button';
 import { CardItem } from '../components/cardItem';
 import { db } from '../services/firebaseConection';
 
-interface CarProps {
+export interface CarProps {
   id: string;
   name: string;
   year: string;

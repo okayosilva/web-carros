@@ -1,3 +1,4 @@
+import { Trash2 } from 'lucide-react';
 import { formatCurrency } from '../utils/format';
 
 type CarProps = {
@@ -13,6 +14,7 @@ type CarProps = {
   idImage: string;
   handleImageLoaded: (id: string) => void;
   imagesLoaded: string[];
+  deleteCar?: boolean;
 };
 
 export function CardItem({
@@ -28,18 +30,24 @@ export function CardItem({
   year,
   imagesLoaded,
   handleImageLoaded,
+  deleteCar = false,
 }: CarProps) {
   return (
-    <section className="flex w-full flex-col overflow-hidden rounded-lg bg-white drop-shadow-md">
+    <section className="relative flex h-full max-h-[29.063rem] w-full flex-col overflow-hidden rounded-lg bg-white drop-shadow-md">
       <img
         src={url}
         alt={nameImage}
-        className="h-72 w-full cursor-pointer rounded-lg object-cover transition-all duration-300 hover:scale-105"
+        className="h-72 max-h-72 w-full cursor-pointer rounded-lg object-cover transition-all duration-300 hover:scale-105"
         style={{
           display: imagesLoaded.includes(id) ? 'block' : 'none',
         }}
         onLoad={() => handleImageLoaded(id)}
       />
+      {deleteCar && (
+        <div className="absolute right-3 top-3 z-10 rounded-lg bg-red-500 p-2 text-zinc-50 transition-all hover:bg-red-700">
+          <Trash2 size={22} />
+        </div>
+      )}
       <article className="flex flex-1 flex-col justify-between gap-8 px-3 py-4">
         <div>
           <h2 className="font-bold text-zinc-900">{name}</h2>
