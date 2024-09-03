@@ -14,7 +14,7 @@ type CarProps = {
   idImage: string;
   handleImageLoaded: (id: string) => void;
   imagesLoaded: string[];
-  deleteCar?: boolean;
+  deleteCar?: (id: string) => void;
 };
 
 export function CardItem({
@@ -30,10 +30,10 @@ export function CardItem({
   year,
   imagesLoaded,
   handleImageLoaded,
-  deleteCar = false,
+  deleteCar,
 }: CarProps) {
   return (
-    <section className="relative flex h-full max-h-[29.063rem] w-full flex-col overflow-hidden rounded-lg bg-white drop-shadow-md">
+    <section className="relative flex w-full flex-col overflow-hidden rounded-lg bg-white drop-shadow-md">
       <img
         src={url}
         alt={nameImage}
@@ -43,10 +43,18 @@ export function CardItem({
         }}
         onLoad={() => handleImageLoaded(id)}
       />
-      {deleteCar && (
-        <div className="absolute right-3 top-3 z-10 rounded-lg bg-red-500 p-2 text-zinc-50 transition-all hover:bg-red-700">
+      {deleteCar!! && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            deleteCar(id);
+          }}
+          className="absolute right-3 top-3 z-50 rounded-lg bg-red-500 p-2 text-zinc-50 transition-all hover:bg-red-700"
+        >
           <Trash2 size={22} />
-        </div>
+        </button>
       )}
       <article className="flex flex-1 flex-col justify-between gap-8 px-3 py-4">
         <div>

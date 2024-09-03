@@ -1,25 +1,49 @@
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
+import { TriangleAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CardItem } from '../../components/cardItem';
 import { useAuthenticate } from '../../context/useAuthenticate';
 import { db } from '../../services/firebaseConection';
+import { notifyWithToastify } from '../../utils/notifyWithToastify';
 import { CarProps } from '../home';
 
 export function Dashboard() {
   const [cars, setCars] = useState<CarProps[]>([]);
   const [imagesLoaded, setImagesLoaded] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+
   const { user } = useAuthenticate();
+
+  function handleImageLoaded(id: string) {
+    setImagesLoaded((oldState) => [...oldState, id]);
+  }
+
+  async function handleDeleteCar(id: string) {
+    const docRef = doc(db, 'cars', id);
+    await deleteDoc(docRef)
+      .then(() => notifyWithToastify('success', 'Carro deletado com sucesso'))
+      .catch(() => notifyWithToastify('error', 'Erro ao deletar carro'));
+
+    setCars((oldState) => oldState.filter((car) => car.id !== id));
+  }
 
   useEffect(() => {
     const loadCars = async () => {
+      setLoading(true);
       if (!user?.uid) return;
 
       const carsRef = collection(db, 'cars');
       const queryRef = query(carsRef, where('uid', '==', user?.uid));
 
       const carItem = await getDocs(queryRef);
-      console.log('carItem', carItem);
       const carsList: CarProps[] = carItem.docs.map((doc) => ({
         id: doc.id,
         name: doc.data().name,
@@ -30,44 +54,47 @@ export function Dashboard() {
         km: doc.data().km,
         images: doc.data().images,
       }));
-      console.log(carsList);
       setCars(carsList);
+      setLoading(false);
     };
 
     loadCars();
-  }, []);
-
-  function handleImageLoaded(id: string) {
-    setImagesLoaded((oldState) => [...oldState, id]);
-  }
+  }, [user?.uid]);
   return (
-    <main className="mt-9 grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
+    <main className="mt-9 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {cars.length === 0 && loading === false && (
+        <div className="col-span-full flex w-full flex-col items-center gap-2 rounded-lg bg-gray-200 p-6 shadow-sm">
+          <TriangleAlert size={30} className="text-zinc-700" />
+          <h1 className="text-center text-lg font-bold text-zinc-700">
+            Nenhum carro cadastrado
+          </h1>
+        </div>
+      )}
+
       {cars.map((car) => (
-        <>
+        <Link to={`/car/${car.id}`} key={car.id}>
           <div
             className="h-72 w-full animate-pulse rounded-lg bg-gray-400"
             style={{
               display: imagesLoaded.includes(car.id) ? 'none' : 'block',
             }}
           ></div>
-          <Link to={`/car/${car.id}`} key={car.id}>
-            <CardItem
-              name={car.name}
-              nameImage={car.images[0].name}
-              url={car.images[0].url}
-              city={car.city}
-              id={car.id}
-              km={car.km}
-              price={car.price}
-              uid={car.uid}
-              year={car.year}
-              idImage={car.images[0].uid}
-              handleImageLoaded={handleImageLoaded}
-              imagesLoaded={imagesLoaded}
-              deleteCar
-            />
-          </Link>
-        </>
+          <CardItem
+            name={car.name}
+            nameImage={car.images[0].name}
+            url={car.images[0].url}
+            city={car.city}
+            id={car.id}
+            km={car.km}
+            price={car.price}
+            uid={car.uid}
+            year={car.year}
+            idImage={car.images[0].uid}
+            handleImageLoaded={handleImageLoaded}
+            imagesLoaded={imagesLoaded}
+            deleteCar={handleDeleteCar}
+          />
+        </Link>
       ))}
     </main>
   );
