@@ -6,12 +6,13 @@ import {
   query,
   where,
 } from 'firebase/firestore';
+import { deleteObject, ref } from 'firebase/storage';
 import { TriangleAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CardItem } from '../../components/cardItem';
 import { useAuthenticate } from '../../context/useAuthenticate';
-import { db } from '../../services/firebaseConection';
+import { db, storage } from '../../services/firebaseConection';
 import { notifyWithToastify } from '../../utils/notifyWithToastify';
 import { CarProps } from '../home';
 
@@ -26,13 +27,24 @@ export function Dashboard() {
     setImagesLoaded((oldState) => [...oldState, id]);
   }
 
-  async function handleDeleteCar(id: string) {
-    const docRef = doc(db, 'cars', id);
+  async function handleDeleteCar(car: CarProps) {
+    car.images.map(async (image) => {
+      const path = `images/${car.uid}/${image.name}`;
+      const imageRef = ref(storage, path);
+
+      try {
+        await deleteObject(imageRef);
+      } catch (error) {
+        notifyWithToastify('error', 'Erro ao deletar imagem');
+      }
+    });
+
+    const docRef = doc(db, 'cars', car.id);
     await deleteDoc(docRef)
       .then(() => notifyWithToastify('success', 'Carro deletado com sucesso'))
       .catch(() => notifyWithToastify('error', 'Erro ao deletar carro'));
 
-    setCars((oldState) => oldState.filter((car) => car.id !== id));
+    setCars((oldState) => oldState.filter((carItem) => carItem.id !== car.id));
   }
 
   useEffect(() => {
@@ -81,15 +93,13 @@ export function Dashboard() {
           ></div>
           <CardItem
             name={car.name}
-            nameImage={car.images[0].name}
-            url={car.images[0].url}
+            images={car.images}
             city={car.city}
             id={car.id}
             km={car.km}
             price={car.price}
             uid={car.uid}
             year={car.year}
-            idImage={car.images[0].uid}
             handleImageLoaded={handleImageLoaded}
             imagesLoaded={imagesLoaded}
             deleteCar={handleDeleteCar}

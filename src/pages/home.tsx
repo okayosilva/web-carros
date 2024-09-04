@@ -72,7 +72,7 @@ export function Home() {
           Carros novos e usados em todo o Brasil
         </h1>
         <main className="mx-auto mt-4 grid w-full max-w-7xl grid-cols-1 gap-6 pb-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {cars.map((car) => (
+          {cars.map((car, index) => (
             <Link to={`/car/${car.id}`} key={car.id}>
               <div
                 className="h-72 w-full animate-pulse rounded-lg bg-gray-400"
@@ -82,15 +82,13 @@ export function Home() {
               ></div>
               <CardItem
                 name={car.name}
-                nameImage={car.images[0].name}
-                url={car.images[0].url}
                 city={car.city}
+                images={car.images}
                 id={car.id}
                 km={car.km}
                 price={car.price}
                 uid={car.uid}
                 year={car.year}
-                idImage={car.images[0].uid}
                 handleImageLoaded={handleImageLoaded}
                 imagesLoaded={imagesLoaded}
               />

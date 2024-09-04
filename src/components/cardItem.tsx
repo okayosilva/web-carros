@@ -1,42 +1,31 @@
 import { Trash2 } from 'lucide-react';
+import { CarProps } from '../pages/home';
 import { formatCurrency } from '../utils/format';
 
-type CarProps = {
-  id: string;
-  name: string;
-  year: string;
-  uid: string;
-  price: string;
-  city: string;
-  km: string;
-  url: string;
-  nameImage: string;
-  idImage: string;
+type CarPropsCard = CarProps & {
   handleImageLoaded: (id: string) => void;
   imagesLoaded: string[];
-  deleteCar?: (id: string) => void;
+  deleteCar?: (car: CarProps) => void;
 };
 
 export function CardItem({
   name,
-  idImage,
-  nameImage,
-  url,
   city,
   id,
   km,
   price,
   uid,
+  images,
   year,
   imagesLoaded,
   handleImageLoaded,
   deleteCar,
-}: CarProps) {
+}: CarPropsCard) {
   return (
     <section className="relative flex w-full flex-col overflow-hidden rounded-lg bg-white drop-shadow-md">
       <img
-        src={url}
-        alt={nameImage}
+        src={images[0].url}
+        alt={images[0].name}
         className="h-72 max-h-72 w-full cursor-pointer rounded-lg object-cover transition-all duration-300 hover:scale-105"
         style={{
           display: imagesLoaded.includes(id) ? 'block' : 'none',
@@ -49,7 +38,7 @@ export function CardItem({
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            deleteCar(id);
+            deleteCar({ name, city, id, km, price, uid, images, year });
           }}
           className="absolute right-3 top-3 z-50 rounded-lg bg-red-500 p-2 text-zinc-50 transition-all hover:bg-red-700"
         >
