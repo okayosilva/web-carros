@@ -1,7 +1,9 @@
 import { doc, getDoc } from 'firebase/firestore';
 import { HandCoins, Phone } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { Button } from '../components/button';
 import { db } from '../services/firebaseConection';
 import { formatCurrency } from '../utils/format';
@@ -18,13 +20,18 @@ type CarDetailsProps = CarProps & {
 
 export function CarDetail() {
   const [car, setCar] = useState<CarDetailsProps>();
+  const [sliderPerView, setSliderPerView] = useState(2);
+
   const { id } = useParams();
+  const navigation = useNavigate();
 
   useEffect(() => {
     const loadCar = async () => {
       if (!id) return;
       const docRef = doc(db, 'cars', id);
       await getDoc(docRef).then((item) => {
+        if (!item.data()) navigation('/');
+
         setCar({
           id: item.id,
           name: item.data()?.name,
@@ -47,8 +54,37 @@ export function CarDetail() {
     loadCar();
   }, [id]);
 
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 768) {
+        return setSliderPerView(1);
+      }
+      setSliderPerView(2);
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <main className="w-full space-y-6">
+      {car && (
+        <Swiper
+          slidesPerView={sliderPerView}
+          pagination={{ clickable: true }}
+          navigation
+        >
+          {car?.images.map((image) => (
+            <SwiperSlide>
+              <img
+                className="h-96 w-full object-cover"
+                key={image.name}
+                src={image.url}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
       {car && (
         <section className="w-full space-y-6 rounded-lg bg-white p-6 shadow-sm">
           <div className="flex flex-wrap items-start justify-between space-y-2">
@@ -95,10 +131,14 @@ export function CarDetail() {
               <span>Compre AGORA</span>
             </Button>
 
-            <Button color="green" size="lg" fullWidth>
+            <a
+              className="flex h-16 w-full cursor-pointer items-center justify-center rounded-lg border-none bg-green-500 px-4 py-2 font-bold text-white transition-all duration-300 hover:bg-green-600"
+              href={`https://api.whatsapp.com/send?phone${car?.whatsapp}&text=Olá vi esse carro ${car?.name} em um anúncio da WebCarros, podemos conversar? Tenho uma proposta!`}
+              target="_blank"
+            >
               <Phone size={22} className="mr-2" />
               <span>Entre em contato</span>
-            </Button>
+            </a>
           </div>
         </section>
       )}

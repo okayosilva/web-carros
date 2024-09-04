@@ -31,3 +31,26 @@ button {
 a {
   text-decoration: none;
 }
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: #ffffff;
+  padding: 2rem 1.6rem;
+  transition: all 0.2s;
+  border-radius: 8px;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  color: #ffffff;
+  background: #e11138;
+  padding: 2rem 1.6rem;
+}
+
+.swiper-pagination-bullet {
+  background-color: #000000;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #e11138;
+}

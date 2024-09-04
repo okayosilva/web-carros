@@ -19,6 +19,7 @@
     "react-hook-form": "^7.53.0",
     "react-router-dom": "^6.26.1",
     "react-toastify": "^10.0.5",
+    "swiper": "^11.1.12",
     "tailwind-merge": "^2.5.2",
     "tailwind-variants": "^0.2.1",
     "use-mask-input": "^3.4.0",
