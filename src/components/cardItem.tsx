@@ -47,7 +47,7 @@ export function CardItem({
       )}
       <article className="flex flex-1 flex-col justify-between gap-8 px-3 py-4">
         <div>
-          <h2 className="font-bold text-zinc-900">{name}</h2>
+          <h2 className="font-bold uppercase text-zinc-900">{name}</h2>
           <p className="text-zinc-800">
             {year} | {km}km
           </p>
