@@ -6,12 +6,10 @@ import { addDoc, collection } from 'firebase/firestore';
 import {
   deleteObject,
   getDownloadURL,
-  getStorage,
-  listAll,
   ref,
   uploadBytes,
 } from 'firebase/storage';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 import { z } from 'zod';
 import { Button } from '../../components/button';
@@ -105,7 +103,7 @@ export function NewCart() {
     }));
 
     addDoc(collection(db, 'cars'), {
-      name: data.name,
+      name: data.name.toLowerCase(),
       model: data.model,
       year: data.year,
       km: parseFloat(data.km.replace(/[^\d]/g, '')),
