@@ -1,4 +1,4 @@
-import { Trash2 } from 'lucide-react';
+import { HandCoins, Trash2 } from 'lucide-react';
 import { CarProps } from '../pages/home';
 import { formatCurrency } from '../utils/format';
 
@@ -18,11 +18,18 @@ export function CardItem({
   images,
   year,
   imagesLoaded,
+  quickPurchase = false,
   handleImageLoaded,
   deleteCar,
 }: CarPropsCard) {
   return (
     <section className="relative flex w-full flex-col overflow-hidden rounded-lg bg-white drop-shadow-md">
+      {quickPurchase && (
+        <div className="absolute left-0 top-0 z-50 flex items-center justify-center gap-2 rounded-br-lg bg-red-500 px-2 py-1 font-bold text-zinc-50">
+          <span>Compra rápida</span>
+          <HandCoins size={18} />
+        </div>
+      )}
       <img
         src={images[0].url}
         alt={images[0].name}
@@ -32,6 +39,7 @@ export function CardItem({
         }}
         onLoad={() => handleImageLoaded(id)}
       />
+
       {deleteCar!! && (
         <button
           type="button"

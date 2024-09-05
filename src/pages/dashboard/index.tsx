@@ -65,6 +65,7 @@ export function Dashboard() {
         city: doc.data().city,
         km: doc.data().km,
         images: doc.data().images,
+        quickPurchase: doc.data().quickPurchase,
       }));
       setCars(carsList);
       setLoading(false);
@@ -102,6 +103,7 @@ export function Dashboard() {
             year={car.year}
             handleImageLoaded={handleImageLoaded}
             imagesLoaded={imagesLoaded}
+            quickPurchase={car.quickPurchase}
             deleteCar={handleDeleteCar}
           />
         </Link>

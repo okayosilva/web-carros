@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge';
 import { useHookFormMask } from 'use-mask-input';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
-  placeholder: string;
+  placeholder?: string;
   name: string;
   className?: string;
   register: UseFormRegister<any>;

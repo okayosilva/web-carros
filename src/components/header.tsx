@@ -1,4 +1,4 @@
-import { LoaderCircle, LogIn, User } from 'lucide-react';
+import { LoaderCircle, LogIn, ShoppingCart, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import { useAuthenticate } from '../context/useAuthenticate';
@@ -24,27 +24,41 @@ export function Header() {
           </div>
         )}
 
-        {!isAuthenticated && !loadingAuth && (
-          <Link to="/login" className="text-gray-700">
-            <div className="group rounded-full border-2 border-zinc-300 p-2 transition-all duration-300 hover:bg-zinc-400">
-              <LogIn
-                className="text-zinc-500 transition-all duration-300 group-hover:text-zinc-50"
-                size={18}
-              />
+        <div className="flex items-center gap-6">
+          <Link to="/cart">
+            <div className="relative">
+              <div className="absolute -right-[5px] -top-[2px]">
+                <span className="relative flex h-3 w-3">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-red-500"></span>
+                </span>
+              </div>
+              <ShoppingCart className="text-zinc-500" />
             </div>
           </Link>
-        )}
 
-        {isAuthenticated && !loadingAuth && (
-          <Link to="/dashboard" className="text-gray-700">
-            <div className="group rounded-full border-2 border-zinc-300 p-2 transition-all duration-300 hover:bg-zinc-400">
-              <User
-                className="text-zinc-500 transition-all duration-300 group-hover:text-zinc-50"
-                size={18}
-              />
-            </div>
-          </Link>
-        )}
+          {!isAuthenticated && !loadingAuth && (
+            <Link to="/login" className="text-gray-700">
+              <div className="group rounded-full border-2 border-zinc-300 p-2 transition-all duration-300 hover:bg-zinc-400">
+                <LogIn
+                  className="text-zinc-500 transition-all duration-300 group-hover:text-zinc-50"
+                  size={18}
+                />
+              </div>
+            </Link>
+          )}
+
+          {isAuthenticated && !loadingAuth && (
+            <Link to="/dashboard" className="text-gray-700">
+              <div className="group rounded-full border-2 border-zinc-300 p-2 transition-all duration-300 hover:bg-zinc-400">
+                <User
+                  className="text-zinc-500 transition-all duration-300 group-hover:text-zinc-50"
+                  size={18}
+                />
+              </div>
+            </Link>
+          )}
+        </div>
       </div>
     </header>
   );

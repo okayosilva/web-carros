@@ -65,6 +65,7 @@ const schema = z.object({
       message: 'Número de telefone inválido',
     }),
   description: z.string().min(10, { message: 'A descrição é obrigatória' }),
+  quickPurchase: z.boolean(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -96,6 +97,8 @@ export function NewCart() {
       return;
     }
 
+    console.log(data.quickPurchase);
+
     const carListImages = imageCar.map((car) => ({
       uid: car.uuid,
       name: car.name,
@@ -116,6 +119,7 @@ export function NewCart() {
       owner: user?.name,
       uid: user?.uid,
       images: carListImages,
+      quickPurchase: data.quickPurchase,
     })
       .then(() => {
         reset();
@@ -329,18 +333,32 @@ export function NewCart() {
               placeholder="São Paulo - SP"
             />
           </div>
-          <div className="w-full space-y-2 md:w-96">
-            <label htmlFor="whatsapp" className="font-medium">
-              WhatsApp
-            </label>
-            <Input
-              type="text"
-              register={register}
-              name="whatsapp"
-              error={errors.whatsapp?.message}
-              placeholder="(99) 99999-9999"
-              mask="(99) 99999-9999"
-            />
+          <div className="gap-2 space-y-2">
+            <div className="w-full space-y-2 md:w-96">
+              <label htmlFor="whatsapp" className="font-medium">
+                WhatsApp
+              </label>
+              <Input
+                type="text"
+                register={register}
+                name="whatsapp"
+                error={errors.whatsapp?.message}
+                placeholder="(99) 99999-9999"
+                mask="(99) 99999-9999"
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="quickPurchase" className="font-medium">
+                Habilitar compra rápida?
+              </label>
+              <Input
+                type="checkbox"
+                className="h-6 w-6 cursor-pointer"
+                register={register}
+                name="quickPurchase"
+                error={errors.quickPurchase?.message}
+              />
+            </div>
           </div>
           <div className="space-y-2">
             <label htmlFor="description" className="font-medium">

@@ -14,6 +14,7 @@ export interface CarProps {
   price: string;
   city: string;
   km: string;
+  quickPurchase?: boolean;
   images: CarImageProps[];
 }
 
@@ -42,6 +43,7 @@ export function Home() {
       city: doc.data().city,
       km: doc.data().km,
       images: doc.data().images,
+      quickPurchase: doc.data().quickPurchase,
     }));
     setCars(carsList);
   };
@@ -78,6 +80,7 @@ export function Home() {
       city: doc.data().city,
       km: doc.data().km,
       images: doc.data().images,
+      quickPurchase: doc.data().quickPurchase,
     }));
 
     setCars(carsList);
@@ -134,6 +137,7 @@ export function Home() {
                 price={car.price}
                 uid={car.uid}
                 year={car.year}
+                quickPurchase={car.quickPurchase}
                 handleImageLoaded={handleImageLoaded}
                 imagesLoaded={imagesLoaded}
               />

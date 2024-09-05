@@ -31,7 +31,7 @@ export function CarDetail() {
       const docRef = doc(db, 'cars', id);
       await getDoc(docRef).then((item) => {
         if (!item.data()) navigation('/');
-
+        console.log(item.data());
         setCar({
           id: item.id,
           name: item.data()?.name,
@@ -47,6 +47,7 @@ export function CarDetail() {
           owner: item.data()?.owner,
           whatsapp: item.data()?.whatsapp,
           model: item.data()?.model,
+          quickPurchase: item.data()?.quickPurchase,
         });
       });
     };
@@ -59,7 +60,9 @@ export function CarDetail() {
       if (window.innerWidth < 768) {
         return setSliderPerView(1);
       }
-      setSliderPerView(2);
+      if (window.innerWidth < 1024 && car!!.images.length >= 1) {
+        return setSliderPerView(2);
+      }
     }
 
     window.addEventListener('resize', handleResize);
@@ -86,7 +89,10 @@ export function CarDetail() {
         </Swiper>
       )}
       {car && (
-        <section className="w-full space-y-6 rounded-lg bg-white p-6 shadow-sm">
+        <section
+          key={car?.id}
+          className="w-full space-y-6 rounded-lg bg-white p-6 shadow-sm"
+        >
           <div className="flex flex-wrap items-start justify-between space-y-2">
             <div className="space-y-2">
               <h1 className="text-xl font-bold uppercase text-zinc-900 md:text-2xl lg:text-4xl">
@@ -126,10 +132,12 @@ export function CarDetail() {
           </div>
 
           <div className="space-y-2">
-            <Button color="black" size="lg" fullWidth>
-              <HandCoins size={22} className="mr-2" />
-              <span>Compre AGORA</span>
-            </Button>
+            {car?.quickPurchase && (
+              <Button color="black" size="lg" fullWidth>
+                <HandCoins size={22} className="mr-2" />
+                <span>Compre AGORA</span>
+              </Button>
+            )}
 
             <a
               className="flex h-16 w-full cursor-pointer items-center justify-center rounded-lg border-none bg-green-500 px-4 py-2 font-bold text-white transition-all duration-300 hover:bg-green-600"
