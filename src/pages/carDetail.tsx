@@ -5,11 +5,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Button } from '../components/button';
+import { useCart } from '../context/useCart';
 import { db } from '../services/firebaseConection';
 import { formatCurrency } from '../utils/format';
 import { CarProps } from './home';
 
-type CarDetailsProps = CarProps & {
+export type CarDetailsProps = CarProps & {
   created: string;
   description: string;
   color: string;
@@ -22,6 +23,8 @@ export function CarDetail() {
   const [car, setCar] = useState<CarDetailsProps>();
   const [sliderPerView, setSliderPerView] = useState(2);
 
+  const { addCart } = useCart();
+
   const { id } = useParams();
   const navigation = useNavigate();
 
@@ -31,7 +34,6 @@ export function CarDetail() {
       const docRef = doc(db, 'cars', id);
       await getDoc(docRef).then((item) => {
         if (!item.data()) navigation('/');
-        console.log(item.data());
         setCar({
           id: item.id,
           name: item.data()?.name,
@@ -133,7 +135,15 @@ export function CarDetail() {
 
           <div className="space-y-2">
             {car?.quickPurchase && (
-              <Button color="black" size="lg" fullWidth>
+              <Button
+                color="black"
+                size="lg"
+                fullWidth
+                onClick={() => {
+                  addCart(car!!);
+                  navigation('/cart');
+                }}
+              >
                 <HandCoins size={22} className="mr-2" />
                 <span>Compre AGORA</span>
               </Button>

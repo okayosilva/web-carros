@@ -4,6 +4,7 @@ import { LayoutDefault } from '../layout/layoutDefault';
 
 import { LayoutDashboard } from '../layout/layoutDashboard';
 import { CarDetail } from '../pages/carDetail';
+import { Cart } from '../pages/cart';
 import { Dashboard } from '../pages/dashboard';
 import { NewCart } from '../pages/dashboard/newCart';
 import { Home } from '../pages/home';
@@ -19,6 +20,7 @@ export function Router() {
         <Route element={<LayoutDefault />}>
           <Route path="/" element={<Home />} />
           <Route path="/car/:id" element={<CarDetail />} />
+          <Route path="/cart" element={<Cart />} />
           <Route element={<LayoutDashboard />}>
             <Route
               path="/dashboard"

@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoaderCircle, Trash2, Upload } from 'lucide-react';
+import { Trash2, TriangleAlert, Upload } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
 import { addDoc, collection } from 'firebase/firestore';
@@ -78,7 +78,6 @@ type ImageProps = {
 
 export function NewCart() {
   const [imageCar, setImageCar] = useState<ImageProps[]>([]);
-  const [loading, setLoading] = useState(false);
   const { user } = useAuthenticate();
   const {
     register,
@@ -96,8 +95,6 @@ export function NewCart() {
       notifyWithToastify('error', 'Envie pelo menos uma imagem');
       return;
     }
-
-    console.log(data.quickPurchase);
 
     const carListImages = imageCar.map((car) => ({
       uid: car.uuid,
@@ -199,24 +196,6 @@ export function NewCart() {
             onChange={handleFile}
           />
         </button>
-
-        {loading && (
-          <>
-            {Array.from({ length: 3 }).map((_, index) => (
-              <div
-                key={index}
-                className="flex h-40 w-full items-center justify-center"
-              >
-                <div className="flex h-40 w-full animate-pulse items-center justify-center rounded-lg bg-gray-200">
-                  <LoaderCircle
-                    className="animate-spin text-red-500"
-                    size={32}
-                  />
-                </div>
-              </div>
-            ))}
-          </>
-        )}
 
         {imageCar.map((image) => (
           <div className="group relative h-40 flex-1" key={image.name}>
@@ -347,17 +326,24 @@ export function NewCart() {
                 mask="(99) 99999-9999"
               />
             </div>
-            <div className="space-y-2">
-              <label htmlFor="quickPurchase" className="font-medium">
-                Habilitar compra rápida?
-              </label>
-              <Input
-                type="checkbox"
-                className="h-6 w-6 cursor-pointer"
-                register={register}
-                name="quickPurchase"
-                error={errors.quickPurchase?.message}
-              />
+            <div className="space-y-4 rounded-lg border border-zinc-500 bg-zinc-100 px-3 py-4">
+              <div className="flex gap-2">
+                <TriangleAlert className="text-red-500" />
+                <span className="font-medium">Habilitar compra rápida?</span>
+              </div>
+              <div className="flex gap-2">
+                <Input
+                  type="checkbox"
+                  className="h-6 w-6 cursor-pointer"
+                  register={register}
+                  name="quickPurchase"
+                  error={errors.quickPurchase?.message}
+                />
+                <label className="text-sm md:text-base" htmlFor="quickPurchase">
+                  Habilitando a compra rápida, a transação é realizada dentro da
+                  plataforma, evitando negociações externas.
+                </label>
+              </div>
             </div>
           </div>
           <div className="space-y-2">
