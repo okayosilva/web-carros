@@ -5,7 +5,7 @@ import { tv } from 'tailwind-variants';
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode;
   color?: 'red' | 'green' | 'black';
-  size?: 'sm' | 'lg';
+  size?: 'sm' | 'lg' | 'xs';
   fullWidth?: boolean;
   className?: string;
 };
@@ -19,6 +19,7 @@ const button = tv({
       black: 'bg-zinc-900 hover:bg-zinc-950',
     },
     size: {
+      xs: 'h-12 w-40',
       sm: 'h-12 w-20 md:w-64',
       lg: 'h-16 w-auto',
     },

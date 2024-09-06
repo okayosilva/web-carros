@@ -1,12 +1,34 @@
 import { ShoppingCart, Trash2 } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Button } from '../components/button';
 import { useCart } from '../context/useCart';
 import { formatCurrency } from '../utils/format';
 
 export function Cart() {
   const { cartCar, removeCart } = useCart();
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+
+  useMemo(() => {
+    const total = cartCar.reduce((acc, car) => acc + Number(car.price), 0);
+    setTotalPrice(total);
+  }, [cartCar]);
 
   return (
     <main className="mt-4 space-y-4">
+      <div className="flex justify-center rounded-lg bg-red-500 p-2">
+        <h1 className="font-semibold text-gray-50">Meu carrinho</h1>
+      </div>
+
+      {cartCar.length > 0 && (
+        <div className="flex flex-wrap items-center justify-between rounded-lg bg-gray-50 px-4 py-2 shadow-sm">
+          <span className="font-bold">
+            Valor total: {formatCurrency(String(totalPrice))}
+          </span>
+          <Button color="black" size="xs">
+            <span className="text-sm">Finalizar compra</span>
+          </Button>
+        </div>
+      )}
       {cartCar.length === 0 && (
         <div className="flex h-96 items-center justify-center rounded-lg bg-gray-200 px-4 shadow-sm">
           <div className="flex flex-wrap items-center justify-center gap-2 text-center text-xl font-bold text-zinc-900">
@@ -34,15 +56,15 @@ export function Cart() {
 
               <div className="flex space-x-3">
                 <div className="space-y-1 text-sm">
-                  <p>Cidade:</p>
+                  <p>Cidade</p>
                   <p className="font-bold text-zinc-900">{car.city}</p>
                 </div>
                 <div className="space-y-1 text-sm">
-                  <p>Ano:</p>
+                  <p>Ano</p>
                   <p className="font-bold text-zinc-900">{car.year}</p>
                 </div>
                 <div className="space-y-1 text-sm">
-                  <p>Cor:</p>
+                  <p>Cor</p>
                   <p className="font-bold capitalize text-zinc-900">
                     {car.color}
                   </p>
