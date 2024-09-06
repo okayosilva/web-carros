@@ -50,7 +50,9 @@ export function Cart() {
             />
             <div className="flex-1 space-y-3">
               <div className="space-y-2">
-                <p className="text-lg font-bold text-zinc-900">{car.name}</p>
+                <p className="text-lg font-bold capitalize text-zinc-900">
+                  {car.name}
+                </p>
                 <p className="text-xs md:text-sm">{car.model}</p>
               </div>
 
