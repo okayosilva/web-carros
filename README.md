@@ -10,6 +10,7 @@ Web Carros: O lugar perfeito para encontrar o carro dos seus sonhos ou vender o 
 - Cadastrar carros à venda
 - Remover carros
 - Adicionar carros ao carrinho
+- Área administrativa para gerenciar os carros que estão à venda
 
 ## Technologies Used:
 
