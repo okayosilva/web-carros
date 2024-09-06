@@ -1,50 +1,38 @@
-# React + TypeScript + Vite
+![Background do repositório](./public/Screenshot_4.png)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Web Carros
 
-Currently, two official plugins are available:
+Web Carros: O lugar perfeito para encontrar o carro dos seus sonhos ou vender o seu! Crie sua conta e descubra a forma mais fácil de comprar ou desapegar do seu veículo. Simples, rápido e feito para você!
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Funcionalidades:
 
-## Expanding the ESLint configuration
+- Criar conta
+- Cadastrar carros à venda
+- Remover carros
+- Adicionar carros ao carrinho
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Technologies Used:
 
-- Configure the top-level `parserOptions` property like this:
+    * Frontend
+    * React
+    * TailwindCSS
+    * Tailwind merge
+    * Prettier plugin tailwindcss
+    * Swiper
+    * React Hook Form
+    * React Toastify
+    * Use Mask Input
+    * zod
+    * Lucide react
+    * React router dom
+    * ESLint
+    * Husky
+    * Lint Staged
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Projeto no ar:
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+<a target="_blank" href="https://tailwind-color-finder-pearl.vercel.app/">Acessar</a>
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Contribuições
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Interessado em contribuir para o projeto? Faça um fork e abra um Pull Request. Vamos nessa! 👊🏽
