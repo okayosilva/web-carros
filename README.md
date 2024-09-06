@@ -29,11 +29,3 @@ Web Carros: O lugar perfeito para encontrar o carro dos seus sonhos ou vender o 
     * ESLint
     * Husky
     * Lint Staged
-
-## Projeto no ar:
-
-<a target="_blank" href="https://tailwind-color-finder-pearl.vercel.app/">Acessar</a>
-
-## Contribuições
-
-Interessado em contribuir para o projeto? Faça um fork e abra um Pull Request. Vamos nessa! 👊🏽
