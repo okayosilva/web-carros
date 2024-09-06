@@ -18,6 +18,7 @@ Web Carros: O lugar perfeito para encontrar o carro dos seus sonhos ou vender o 
     * React
     * TailwindCSS
     * Tailwind merge
+    * Tailwind variants
     * Prettier plugin tailwindcss
     * Swiper
     * React Hook Form
